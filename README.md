@@ -17,7 +17,7 @@ def get_match_data(min_floor,
 ```
 
 ## Example
-The below code returns and prints data from 100 pages of 100 replays, those of which
+The below code returns and prints data from 5 pages of 100 replays, those of which
 have Millia and Potemkin throughough floors 
 
 ```python3
@@ -27,8 +27,9 @@ game_data = get_match_data(min_floor=6,
                            max_floor=8,
                            char1_num=char1,
                            char2_num=char2,
-                           pages=1,
+                           pages=5,
                            replays_per_page=100)
 for game in game_data:
     print(game.winner, game.loser, game.floor, game.date_time)
 ```
+Please note that load times may be long for the api due to the data having to be obtained from Japan
