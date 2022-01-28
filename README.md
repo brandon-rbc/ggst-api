@@ -6,7 +6,7 @@ https://github.com/halvnykterist/ggst-api-rs was used to deconstruct the api and
 More information on how the code works can also be found at that link above.
 
 
-Calling the below method will allow the user to obtain:
+Calling the below method will allow the user to obtain at max 100 pages of 127 replays:
 ```python3
 def get_match_data(min_floor,
                    max_floor,
