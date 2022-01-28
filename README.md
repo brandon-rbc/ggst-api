@@ -18,7 +18,7 @@ def get_match_data(min_floor,
 
 ## Example
 The below code returns and prints data from 5 pages of 100 replays, those of which
-have Millia and Potemkin throughough floors 
+have Millia and Potemkin throughout floors 6 and 8
 
 ```python3
 char1 = char_dict['Millia']
