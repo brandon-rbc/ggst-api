@@ -27,9 +27,11 @@ game_data = get_match_data(min_floor=6,
                            max_floor=8,
                            char1_num=char1,
                            char2_num=char2,
-                           pages=5,
-                           replays_per_page=100)
+                           pages=1,
+                           replays_per_page=10)
 for game in game_data:
-    print(game.winner, game.loser, game.floor, game.date_time)
+    nameWinner = [char for char, charNum in char_dict.items() if charNum == game.winner][0]
+    nameLoser = [char for char, charNum in char_dict.items() if charNum == game.loser][0]
+    print(game.winner, game.loser, game.floor, game.date_time, nameWinner, nameLoser, game.winner_side)
 ```
 Please note that load times may be long for the api due to the data having to be obtained from Japan
