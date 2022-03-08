@@ -10,6 +10,7 @@ class match_result():
         self.loser = -1
         self.floor = ''
         self.date_time = ''
+        self.winner_side = -1
 
 
 char_dict = {
@@ -39,7 +40,7 @@ def format_game_info(min_floor, max_floor, char1_num, char2_num):
     return f"{min_floor:02x}{max_floor:02x}90{char1_num:02x}{char2_num:02x}{0x00:02x}0001"
 
 
-def get_match_data(min_floor=1, max_floor=11, char1_num=0, char2_num=0, replays_per_page=100, pages=100):
+def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, replays_per_page=100, pages=100):
     # Parameter Checking
     if pages > 100:
         raise ValueError(f"cannot query over 100 pages, 'f{pages}' requested")
@@ -60,15 +61,16 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=0, char2_num=0, replays_
                                             max_floor=max_floor,
                                             char1_num=char1_num,
                                             char2_num=char2_num)
-        # https://github.com/halvnykterist/ggst-api-rs/blob/master/README.md#how-does-the-api-work
-        request_string = f"9295B2323131303237313133313233303038333834AD3631613565643466343631633202A5302E312E3003940100" \
-                         f"7F9AFFA3416C6C016390FFFF000001{page_num:02x}{replays_per_page:02x}9AFF00{game_data_string}"
+
+        # https://github.com/halvnykterist/ggst-api-rs/blob/7087563272b9c829db8860a4b3952b1a65ea855c/src/requests.rs#L88-L92
+        request_string = f"9295B2323131303237313133313233303038333834AD3631613565643466343631633202A5302E3" \
+                         f"12E30039401CC{page_num:02x}{replays_per_page:02x}9AFF00{game_data_string}"
 
         data = {"data": f"{request_string}"}
         headers = {"USER_AGENT": "Steam", "CACHE_CONTROL": "no-cache"}
         res = requests.post(request_url, data=data, headers=headers)
 
-        if len(res.content) < 63:
+        if len(res.content) < 71:
             print('No Matches Found')
             return []
         all_matches = res.content.split(b'\x01\x00\x00\x00')
@@ -79,17 +81,21 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=0, char2_num=0, replays_
             # res_data[1]: \x95\xb2{p1_id [18 chars]}\xa_{p1_name}\xb1{p1_some_number}\xaf{p1_online_id}\x07
             # res_data[2]: \x95\xb2{p2_id}\xa_{p2_name}\xb1{p2_some_number}\xaf{p2_online_id}\t{winner}\xb3{timestamp}
 
-            winner = match_data[2].split(b'\xb3')[0][-1]
-            date_time = match_data[2].split(b'\xb3')[1][0:19]
+            p1 = match_data[0][-2]
+            p2 = match_data[0][-1]
+            if p1 == 0 or p2 == 0: # sometimes returns character values of zero, not sure what it means yet
+                continue
+            winner = match_data[2].split(b'\xb3')[-2][-1]
+            date_time = match_data[2].split(b'\xb3')[-1][0:19]
 
             tmp_res = match_result()
             if winner == 1:
-                tmp_res.winner = char1_num
-                tmp_res.loser = char2_num
+                tmp_res.winner = p1
+                tmp_res.loser = p2
                 tmp_res.winner_side = 1
             else:
-                tmp_res.winner = char2_num
-                tmp_res.loser = char1_num
+                tmp_res.winner = p2
+                tmp_res.loser = p1
                 tmp_res.winner_side = 2
             tmp_res.floor = f'{match_data[0][-3]}'
             # if 99 -> celestial(floor 11)
@@ -103,10 +109,10 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=0, char2_num=0, replays_
 
 # start = time.time()
 def example():
-    char1 = char_dict['Millia']
-    char2 = char_dict['Potemkin']
-    game_data = get_match_data(min_floor=10,
-                               max_floor=10,
+    char1 = char_dict['Sol']
+    char2 = char_dict['Sol']
+    game_data = get_match_data(min_floor=5,
+                               max_floor=7,
                                char1_num=char1,
                                char2_num=char2,
                                pages=1,
@@ -115,7 +121,8 @@ def example():
 
     for game in game_data:
         nameWinner = [char for char, charNum in char_dict.items() if charNum == game.winner][0]
-        print(game.winner, game.loser, game.floor, game.date_time, nameWinner)
+        nameLoser = [char for char, charNum in char_dict.items() if charNum == game.loser][0]
+        print(game.winner, game.loser, game.floor, game.date_time, nameWinner, nameLoser, game.winner_side)
 
 
 example()
