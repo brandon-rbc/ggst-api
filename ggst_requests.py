@@ -10,7 +10,6 @@ class match_result():
         self.loser = -1
         self.floor = ''
         self.date_time = ''
-        self.winner_side = -1
 
 
 char_dict = {
@@ -61,7 +60,7 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=0, char2_num=0, replays_
                                             max_floor=max_floor,
                                             char1_num=char1_num,
                                             char2_num=char2_num)
-
+        # https://github.com/halvnykterist/ggst-api-rs/blob/master/README.md#how-does-the-api-work
         request_string = f"9295B2323131303237313133313233303038333834AD3631613565643466343631633202A5302E312E3003940100" \
                          f"7F9AFFA3416C6C016390FFFF000001{page_num:02x}{replays_per_page:02x}9AFF00{game_data_string}"
 
@@ -115,7 +114,8 @@ def example():
     # end = time.time()
 
     for game in game_data:
-        print(game.winner, game.loser, game.floor, game.date_time, game.winner_side)
+        nameWinner = [char for char, charNum in char_dict.items() if charNum == game.winner][0]
+        print(game.winner, game.loser, game.floor, game.date_time, nameWinner)
 
 
 example()
