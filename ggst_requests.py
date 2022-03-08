@@ -94,7 +94,7 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
             if not (winner == 1 or winner == 2): # if winner not found, just skip that match
                 continue
 
-            date_time = match_data[2].split(b'\xb3')[-1][0:19]
+            date_time = match_data[2].split(b'\xb3')[-1][0:19].decode('utf-8')
 
             tmp_res = match_result()
             tmp_res.p1 = p1
