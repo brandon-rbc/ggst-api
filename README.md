@@ -2,7 +2,7 @@
 
 A barebones wrapper for Guilty Gear Strive's REST API  
   
-https://github.com/halvnykterist/ggst-api-rs was used to deconstruct the api and inspired the formation of the rest of my code.
+https://github.com/halvnykterist/ggst-api-rs was used as a reference to deconstruct the api and inspired the formation of the rest of my code.
 More information on how the code works can also be found at that link above.
 
 
@@ -18,7 +18,8 @@ def get_match_data(min_floor,
 
 ## Example
 The below code returns and prints data from 5 pages of 100 replays, those of which
-have Millia and Potemkin throughout floors 6 and 8
+have Millia and Potemkin throughout floors 6 and 8. The method returns list of match_result objects, 
+which can be seen here: https://github.com/brandon-rbc/ggst-api-py/blob/2562ec9aaea8a39d523ff15e037afe95f8a80cad/ggst_requests.py#L7-L15
 
 ```python3
 char1 = char_dict['Millia']
