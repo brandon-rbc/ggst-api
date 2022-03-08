@@ -61,8 +61,8 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=0, char2_num=0, replays_
                                             char1_num=char1_num,
                                             char2_num=char2_num)
 
-        request_string = f"9295B2323131303237313133313233303038333834AD36316135656434663436" \
-                         f"31633202A5302E302E39039401CC{page_num:02x}{replays_per_page:02x}9AFF00{game_data_string}"
+        request_string = 9295B2323131303237313133313233303038333834AD36316135656434663436" \
+                         f"31633202A5302E302E38039401CC{page_num:02x}{replays_per_page:02x}9AFF00{game_data_string}"
 
         data = {"data": f"{request_string}"}
         headers = {"USER_AGENT": "Steam", "CACHE_CONTROL": "no-cache"}
