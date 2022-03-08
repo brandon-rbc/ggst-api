@@ -6,6 +6,8 @@ ggst_api_url = "https://ggst-game.guiltygear.com"
 
 class match_result():
     def __init__(self):
+        self.p1 = -1
+        self.p2 = -1
         self.winner = -1
         self.loser = -1
         self.floor = ''
@@ -89,6 +91,8 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
             date_time = match_data[2].split(b'\xb3')[-1][0:19]
 
             tmp_res = match_result()
+            tmp_res.p1 = p1
+            tmp_res.p2 = p2
             if winner == 1:
                 tmp_res.winner = p1
                 tmp_res.loser = p2
@@ -125,4 +129,4 @@ def example():
         print(game.winner, game.loser, game.floor, game.date_time, nameWinner, nameLoser, game.winner_side)
 
 
-example()
+# example()
