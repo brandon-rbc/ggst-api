@@ -27,8 +27,8 @@ game_data = get_match_data(min_floor=6,
                            max_floor=8,
                            char1_num=char1,
                            char2_num=char2,
-                           pages=1,
-                           replays_per_page=10)
+                           pages=5,
+                           replays_per_page=100)
 for game in game_data:
     nameWinner = [char for char, charNum in char_dict.items() if charNum == game.winner][0]
     nameLoser = [char for char, charNum in char_dict.items() if charNum == game.loser][0]
