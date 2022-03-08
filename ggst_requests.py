@@ -16,25 +16,25 @@ class match_result():
 
 
 char_dict = {
-    "Sol": 1,
-    "Ky": 2,
-    "May": 3,
-    "Axl": 4,
-    "Chipp": 5,
-    "Potemkin": 6,
-    "Faust": 7,
-    "Millia": 8,
-    "Zato": 9,
-    "Ramlethal": 10,
-    "Leo": 11,
-    "Nagoriyuki": 12,
-    "Giovanna": 13,
-    "Anji": 14,
-    "Ino": 15,
-    "Goldlewis": 16,
-    "Jacko": 17,
-    "HappyChaos": 18,
-    "Baiken": 19,
+    "Sol": 0,
+    "Ky": 1,
+    "May": 2,
+    "Axl": 3,
+    "Chipp": 4,
+    "Potemkin": 5,
+    "Faust": 6,
+    "Millia": 7,
+    "Zato": 8,
+    "Ramlethal": 9,
+    "Leo": 10,
+    "Nagoriyuki": 11,
+    "Giovanna": 12,
+    "Anji": 13,
+    "Ino": 14,
+    "Goldlewis": 15,
+    "Jacko": 16,
+    "HappyChaos": 17,
+    "Baiken": 18,
 }
 
 
@@ -59,7 +59,7 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
 
     game_results = []
     for page_num in range(pages):
-        print(f"getting data for {char1_num} vs {char2_num}, page {page_num}")
+        # print(f"getting data for {char1_num} vs {char2_num}, page {page_num}")
 
         game_data_string = format_game_info(min_floor=min_floor,
                                             max_floor=max_floor,
@@ -90,8 +90,6 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
             p1 = match_data[0][-2]
             p2 = match_data[0][-1]
 
-            if p1 == 0 or p2 == 0: # sometimes returns character values of zero, not sure what it means yet
-                continue
 
             winner = match_data[2].split(b'\xb3')[0][-1]
             if not (winner == 1 or winner == 2): # if winner not found, just skip that match
@@ -114,7 +112,7 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
                 tmp_res.winner = p2
                 tmp_res.loser = p1
                 tmp_res.winner_side = 2
-                tmp_res.floor = f'{match_data[0][-3]}'
+            tmp_res.floor = f'{match_data[0][-3]}'
 
             # if 99 -> celestial(floor 11)
 
@@ -128,13 +126,13 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
 
 def example():
     char1 = char_dict['Sol']
-    char2 = char_dict['Chipp']
-    game_data = get_match_data(min_floor=9,
+    char2 = char_dict['Baiken']
+    game_data = get_match_data(min_floor=8,
                                max_floor=11,
                                char1_num=char1,
                                char2_num=char2,
-                               pages=30,
-                               replays_per_page=10)
+                               pages=2,
+                               replays_per_page=100)
 
     for game in game_data:
         nameWinner = [char for char, charNum in char_dict.items() if charNum == game.winner][0]
@@ -142,4 +140,5 @@ def example():
         print(game.winner, game.loser, game.floor, game.date_time, nameWinner, nameLoser, game.winner_side)
 
 
-# example()
+
+example()
