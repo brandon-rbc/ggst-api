@@ -79,18 +79,21 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
         all_matches.pop()  # delete empty index at end
         for match in all_matches:
             match_data = match.split(b'\x95\xb2')
+
             # res_data[0]: {floor}{p1_char}{p2_char}
             # res_data[1]: \x95\xb2{p1_id [18 chars]}\xa_{p1_name}\xb1{p1_some_number}\xaf{p1_online_id}\x07
             # res_data[2]: \x95\xb2{p2_id}\xa_{p2_name}\xb1{p2_some_number}\xaf{p2_online_id}\t{winner}\xb3{timestamp}
 
             p1 = match_data[0][-2]
             p2 = match_data[0][-1]
+
             if p1 == 0 or p2 == 0: # sometimes returns character values of zero, not sure what it means yet
                 continue
 
             winner = match_data[2].split(b'\xb3')[0][-1]
-            if not winner == 1 or not winner == 2: # if winner not found, just skip that match
+            if not (winner == 1 or winner == 2): # if winner not found, just skip that match
                 continue
+
             date_time = match_data[2].split(b'\xb3')[-1][0:19]
 
             tmp_res = match_result()
@@ -122,8 +125,8 @@ def example():
                                max_floor=11,
                                char1_num=char1,
                                char2_num=char2,
-                               pages=5,
-                               replays_per_page=100)
+                               pages=1,
+                               replays_per_page=10)
     # end = time.time()
 
     for game in game_data:
