@@ -18,8 +18,7 @@ def get_match_data(min_floor,
 
 ## Example
 The below code returns and prints data from 5 pages of 100 replays, those of which
-have Millia and Potemkin throughout floors 6 and 8. The method returns list of match_result objects, 
-which can be seen here: https://github.com/brandon-rbc/ggst-api-py/blob/2562ec9aaea8a39d523ff15e037afe95f8a80cad/ggst_requests.py#L7-L15
+have Millia and Potemkin throughout floors 6 and 8.
 
 ```python3
 char1 = char_dict['Millia']
@@ -35,4 +34,7 @@ for game in game_data:
     nameLoser = [char for char, charNum in char_dict.items() if charNum == game.loser][0]
     print(game.winner, game.loser, game.floor, game.date_time, nameWinner, nameLoser, game.winner_side)
 ```
+The method returns list of match_result objects, 
+which can be seen here: https://github.com/brandon-rbc/ggst-api-py/blob/2562ec9aaea8a39d523ff15e037afe95f8a80cad/ggst_requests.py#L7-L15
+
 Please note that load times may be long for the api due to the data having to be obtained from Japan
