@@ -87,7 +87,10 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
             p2 = match_data[0][-1]
             if p1 == 0 or p2 == 0: # sometimes returns character values of zero, not sure what it means yet
                 continue
-            winner = match_data[2].split(b'\xb3')[-2][-1]
+
+            winner = match_data[2].split(b'\xb3')[0][-1]
+            if not winner == 1 or not winner == 2: # if winner not found, just skip that match
+                continue
             date_time = match_data[2].split(b'\xb3')[-1][0:19]
 
             tmp_res = match_result()
@@ -113,13 +116,13 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
 
 # start = time.time()
 def example():
-    char1 = char_dict['Sol']
-    char2 = char_dict['Sol']
-    game_data = get_match_data(min_floor=5,
-                               max_floor=7,
+    char1 = char_dict['Axl']
+    char2 = char_dict['Chipp']
+    game_data = get_match_data(min_floor=9,
+                               max_floor=11,
                                char1_num=char1,
                                char2_num=char2,
-                               pages=1,
+                               pages=5,
                                replays_per_page=100)
     # end = time.time()
 
@@ -129,4 +132,4 @@ def example():
         print(game.winner, game.loser, game.floor, game.date_time, nameWinner, nameLoser, game.winner_side)
 
 
-# example()
+example()
