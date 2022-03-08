@@ -59,6 +59,8 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
 
     game_results = []
     for page_num in range(pages):
+        print(f"getting data for {char1_num} vs {char2_num}, page {page_num}")
+
         game_data_string = format_game_info(min_floor=min_floor,
                                             max_floor=max_floor,
                                             char1_num=char1_num,
@@ -74,7 +76,8 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
 
         if len(res.content) < 71:
             print('No Matches Found')
-            return []
+            continue
+
         all_matches = res.content.split(b'\x01\x00\x00\x00')
         all_matches.pop()  # delete empty index at end
         for match in all_matches:
@@ -94,7 +97,11 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
             if not (winner == 1 or winner == 2): # if winner not found, just skip that match
                 continue
 
-            date_time = match_data[2].split(b'\xb3')[-1][0:19].decode('utf-8')
+            try:
+                date_time = match_data[2].split(b'\xb3')[-1][0:19].decode('utf-8')
+            except UnicodeDecodeError:
+                # print("Date not found, setting date to empty string")
+                date_time = ''
 
             tmp_res = match_result()
             tmp_res.p1 = p1
@@ -107,8 +114,10 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
                 tmp_res.winner = p2
                 tmp_res.loser = p1
                 tmp_res.winner_side = 2
-            tmp_res.floor = f'{match_data[0][-3]}'
+                tmp_res.floor = f'{match_data[0][-3]}'
+
             # if 99 -> celestial(floor 11)
+
             tmp_res.date_time = f'{date_time}'  # Datetime sometimes not accessible, will have to check for proper
                                                 # formatting later on
 
@@ -117,17 +126,15 @@ def get_match_data(min_floor=1, max_floor=11, char1_num=255, char2_num=255, repl
     return game_results
 
 
-# start = time.time()
 def example():
-    char1 = char_dict['Axl']
+    char1 = char_dict['Sol']
     char2 = char_dict['Chipp']
     game_data = get_match_data(min_floor=9,
                                max_floor=11,
                                char1_num=char1,
                                char2_num=char2,
-                               pages=1,
+                               pages=30,
                                replays_per_page=10)
-    # end = time.time()
 
     for game in game_data:
         nameWinner = [char for char, charNum in char_dict.items() if charNum == game.winner][0]
