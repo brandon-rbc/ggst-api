@@ -1,5 +1,7 @@
 # ggst-api-py
 
+## NOTE: Does not work with ArcSys's current Strive API
+
 A barebones wrapper for Guilty Gear Strive's REST API  
   
 https://github.com/halvnykterist/ggst-api-rs was used as a reference to deconstruct the api and inspired the formation of the rest of my code.
